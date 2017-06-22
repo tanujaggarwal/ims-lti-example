@@ -103,7 +103,7 @@ app.set('json spaces', 2);
 // If using reverse proxy to terminate SSL
 // Such as an Elastic-Load-Balence, ElasticBeanstalk, Heroku
 // Uncomment the following line
-// app.enable('trust proxy');
+app.enable('trust proxy');
 
 app.post('/launch_lti', bodyParser.urlencoded({ extended: false }), handleLaunch);
 app.post('/submit', bodyParser.urlencoded({ extended: false }), submit);
