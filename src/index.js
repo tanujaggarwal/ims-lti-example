@@ -25,6 +25,7 @@ function getSecret (consumerKey, cb) {
 }
 
 function handleLaunch (req, res, next) {
+	console.log("some launch is done");
 	if (!req.body) {
 		var err = new Error('Expected a body');
 		err.status = 400;
