@@ -28,6 +28,7 @@ function getSecret (consumerKey, cb) {
 
 function submit(){
 	console.log("Entered in submit api");
+	outcome = new lti.Extensions.Outcomes.OutcomeService(provider);
 	if (!outcome){
 		console.log("outcome service not present");
 	}
@@ -69,7 +70,6 @@ function handleLaunch (req, res, next) {
 		}
 
 		provider = new lti.Provider(consumerKey, consumerSecret);
-		outcome = new lti.Extensions.Outcomes.OutcomeService(provider);
 
 
 		provider.valid_request(req, function (err, isValid) {
