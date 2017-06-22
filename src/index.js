@@ -50,6 +50,9 @@ function handleLaunch (req, res, next) {
 
 		return next(err);
 	}
+	else{
+		console.log()
+	}
 
 	var consumerKey = req.body.oauth_consumer_key;
 	if (!consumerKey) {
@@ -64,32 +67,30 @@ function handleLaunch (req, res, next) {
 			return next(err);
 		}
 
-		provider = new lti.Provider(consumerKey, consumerSecret, nonceStore);
+		provider = new lti.Provider(consumerKey, consumerSecret);
 
-		// provider.valid_request(req, function (err, isValid) {
-		// 	if (err || !isValid) {
-		// 		return next(err || new Error('invalid lti'));
-		// 	}
 
-		// 	var body = {};
-		// 	[
-		// 		'roles', 'admin', 'alumni', 'content_developer', 'guest', 'instructor',
-		// 		'manager', 'member', 'mentor', 'none', 'observer', 'other', 'prospective_student',
-		// 		'student', 'ta', 'launch_request', 'username', 'userId', 'mentor_user_ids',
-		// 		'context_id', 'context_label', 'context_title', 'body'
-		// 	].forEach(function (key) {
-		// 		body[key] = provider[key];
-		// 	});
+		provider.valid_request(req, function (err, isValid) {
 
-			
-		// 	res
-		// 		.status(200)
-		// 		.json(body);
-		// });
+			if (err || !isValid) {
+				return next(err || new Error('invalid lti'));
+			}
 
-		console.log(JSON.stringify(provider));
+			// var body = {};
+			// [
+			// 	'roles', 'admin', 'alumni', 'content_developer', 'guest', 'instructor',
+			// 	'manager', 'member', 'mentor', 'none', 'observer', 'other', 'prospective_student',
+			// 	'student', 'ta', 'launch_request', 'username', 'userId', 'mentor_user_ids',
+			// 	'context_id', 'context_label', 'context_title', 'body'
+			// ].forEach(function (key) {
+			// 	body[key] = provider[key];
+			// });
 
-		res.sendFile(path.join(__dirname, 'index.html'));
+			console.log(JSON.stringify(provider));	
+			res.sendFile(path.join(__dirname, 'index.html'));
+
+		});
+
 	});
 }
 
