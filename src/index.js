@@ -87,6 +87,8 @@ function handleLaunch (req, res, next) {
 		// 		.json(body);
 		// });
 
+		console.log(JSON.stringify(provider));
+
 		res.sendFile(path.join(__dirname, 'index.html'));
 	});
 }
