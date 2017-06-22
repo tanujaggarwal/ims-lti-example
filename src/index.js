@@ -7,6 +7,7 @@ var bodyParser = require('body-parser'),
 
 // MemoryStore probably shouldn't be used in production
 var nonceStore = new lti.Stores.MemoryStore();
+var provider = null;
 
 var secrets = Object.create(null);
 secrets.key = 'secret';
@@ -22,6 +23,23 @@ function getSecret (consumerKey, cb) {
 	err.status = 403;
 
 	cb(err);
+}
+
+function submit(){
+	console.log("Entered in submit api");
+	if (!provider.outcome_service){
+		console.log("outcome service not present");
+	}
+	else{
+		provider.outcome_service.send_replace_result_with_url(.5,'https://google.com', function(err,result){
+			if(err){
+				console.log("error in sendingg result");
+			}
+			else{
+				console.log("sucess");
+			}
+		}) 
+	}
 }
 
 function handleLaunch (req, res, next) {
@@ -46,28 +64,30 @@ function handleLaunch (req, res, next) {
 			return next(err);
 		}
 
-		var provider = new lti.Provider(consumerKey, consumerSecret, nonceStore);
+		provider = new lti.Provider(consumerKey, consumerSecret, nonceStore);
 
-		provider.valid_request(req, function (err, isValid) {
-			if (err || !isValid) {
-				return next(err || new Error('invalid lti'));
-			}
+		// provider.valid_request(req, function (err, isValid) {
+		// 	if (err || !isValid) {
+		// 		return next(err || new Error('invalid lti'));
+		// 	}
 
-			var body = {};
-			[
-				'roles', 'admin', 'alumni', 'content_developer', 'guest', 'instructor',
-				'manager', 'member', 'mentor', 'none', 'observer', 'other', 'prospective_student',
-				'student', 'ta', 'launch_request', 'username', 'userId', 'mentor_user_ids',
-				'context_id', 'context_label', 'context_title', 'body'
-			].forEach(function (key) {
-				body[key] = provider[key];
-			});
+		// 	var body = {};
+		// 	[
+		// 		'roles', 'admin', 'alumni', 'content_developer', 'guest', 'instructor',
+		// 		'manager', 'member', 'mentor', 'none', 'observer', 'other', 'prospective_student',
+		// 		'student', 'ta', 'launch_request', 'username', 'userId', 'mentor_user_ids',
+		// 		'context_id', 'context_label', 'context_title', 'body'
+		// 	].forEach(function (key) {
+		// 		body[key] = provider[key];
+		// 	});
 
 			
-			res
-				.status(200)
-				.json(body);
-		});
+		// 	res
+		// 		.status(200)
+		// 		.json(body);
+		// });
+
+		res.sendFile(path.join(__dirname, 'index.html'));
 	});
 }
 
@@ -81,6 +101,7 @@ app.set('json spaces', 2);
 // app.enable('trust proxy');
 
 app.post('/launch_lti', bodyParser.urlencoded({ extended: false }), handleLaunch);
+app.post('/submit', bodyParser.urlencoded({ extended: false }), submit);
 app.get('*', (req, res) => {
 	res.sendFile(path.join(__dirname, 'index.html'));	
 });
