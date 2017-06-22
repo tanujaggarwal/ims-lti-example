@@ -8,6 +8,7 @@ var bodyParser = require('body-parser'),
 // MemoryStore probably shouldn't be used in production
 var nonceStore = new lti.Stores.MemoryStore();
 var provider = null;
+var outcome = null;
 
 var secrets = Object.create(null);
 secrets.key = 'secret';
@@ -27,11 +28,11 @@ function getSecret (consumerKey, cb) {
 
 function submit(){
 	console.log("Entered in submit api");
-	if (!provider.outcome_service){
+	if (!outcome){
 		console.log("outcome service not present");
 	}
 	else{
-		provider.outcome_service.send_replace_result_with_url(.5,'https://google.com', function(err,result){
+		outcome.send_replace_result_with_url(.5,'https://google.com', function(err,result){
 			if(err){
 				console.log("error in sendingg result");
 			}
@@ -68,6 +69,7 @@ function handleLaunch (req, res, next) {
 		}
 
 		provider = new lti.Provider(consumerKey, consumerSecret);
+		outcome = new lti.OutcomeService(provider);
 
 
 		provider.valid_request(req, function (err, isValid) {
