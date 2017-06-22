@@ -88,7 +88,7 @@ function handleLaunch (req, res, next) {
 			// 	body[key] = provider[key];
 			// });
 
-			console.log(JSON.stringify(provider));	
+			console.log(JSON.stringify(provider.body));	
 			res.sendFile(path.join(__dirname, 'index.html'));
 
 		});
