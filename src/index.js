@@ -69,7 +69,7 @@ function handleLaunch (req, res, next) {
 		}
 
 		provider = new lti.Provider(consumerKey, consumerSecret);
-		outcome = lti.OutcomeService(provider);
+		outcome = new lti.Extensions.Outcomes.OutcomeService(provider);
 
 
 		provider.valid_request(req, function (err, isValid) {
