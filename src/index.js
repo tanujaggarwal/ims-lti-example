@@ -79,6 +79,9 @@ app.set('json spaces', 2);
 // app.enable('trust proxy');
 
 app.post('/launch_lti', bodyParser.urlencoded({ extended: false }), handleLaunch);
+app.get('*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'index.html'));	
+});
 
 const port = process.env.PORT || 3001;
 
