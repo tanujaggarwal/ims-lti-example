@@ -80,9 +80,12 @@ app.set('json spaces', 2);
 
 app.post('/launch_lti', bodyParser.urlencoded({ extended: false }), handleLaunch);
 
+const port = process.env.PORT || 3001;
+
+
 var server = require('http')
 	.createServer(app)
-	.listen(3001, function () {
+	.listen(port, function () {
 		var address = server.address();
 		console.log('Listening on %s:%s', address.address, address.port);
 	});
