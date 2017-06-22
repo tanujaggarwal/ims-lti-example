@@ -2,6 +2,7 @@
 
 var bodyParser = require('body-parser'),
 	express = require('express'),
+	path = require('path'),
 	lti = require('ims-lti');
 
 // MemoryStore probably shouldn't be used in production
