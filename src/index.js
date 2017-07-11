@@ -33,7 +33,7 @@ function submit(){
 		console.log("outcome service not present");
 	}
 	else{
-		outcome.send_replace_result_with_url(.5,'https://google.com', function(err,result){
+		outcome.send_replace_result_with_url(Math.random(),'https://google.com', function(err,result){
 			if(err){
 				console.log("error in sendingg result");
 			}
